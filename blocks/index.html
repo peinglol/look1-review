@@ -563,7 +563,7 @@ body.wide .fishb .fcard .pic { max-height: 84px; }
 .stg-floor .floor { left: 50%; top: 9%; bottom: 3%; aspect-ratio: 1; max-width: 94%; transform: translateX(-50%); display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .tile9 { background: #FFFFFF; box-shadow: inset 0 0 0 3px var(--ink), inset -5px -6px 0 rgba(0,0,0,.12); display: grid; place-items: center; padding: 4px; min-width: 0; min-height: 0; }
 .tile9 .pic, .tile9 .wcard .pic { width: 100%; max-height: 100%; }
-.tile9.drop { animation: drop .7s steps(6) forwards; pointer-events: none; }
+.tile9.sink { animation: drop .7s steps(6) forwards; pointer-events: none; }
 @keyframes drop { to { transform: translateY(120%) scale(.8); opacity: 0; } }
 .stg-floor .hopper { left: 50%; top: 45%; width: 9%; max-width: 54px; aspect-ratio: .75; transition: left .35s steps(5), top .35s steps(5); z-index: 3; pointer-events: none; }
 /* seek */
@@ -691,6 +691,82 @@ body.wide .fishb .fcard .pic { max-height: 84px; }
 .intro .story { margin: 0; font-size: 19px; line-height: 1.9; }
 @media (max-width: 520px) { .intro { grid-template-columns: 1fr; justify-items: center; } }
 .picimg { object-fit: contain; object-position: center bottom; aspect-ratio: 1; height: auto; transform: scale(var(--s, 1)); transform-origin: center bottom; }
+/* picture + caption inside a game card: the picture shrinks so the caption always fits */
+.walker, .good, .cloth, .tile9, .room, .sign, .animal, .spot .under, .fishb .fcard, .fblk .fc, .house .who, .lb-pic {
+  display: grid; grid-template-rows: minmax(0, 1fr); grid-template-columns: minmax(0, 1fr); place-items: stretch; }
+:is(.walker, .good, .cloth, .tile9, .room, .sign, .animal, .spot .under, .fishb .fcard, .fblk .fc, .house .who, .lb-pic) > .wcard {
+  height: 100%; min-height: 0; grid-template-rows: minmax(0, 1fr) auto; align-content: stretch; }
+:is(.walker, .good, .cloth, .tile9, .room, .sign, .animal, .spot .under, .fishb .fcard, .fblk .fc, .house .who, .lb-pic) > .wcard > .pic {
+  width: 100%; height: 100%; max-height: none; min-height: 0; aspect-ratio: auto; }
+:is(.walker, .good, .cloth, .tile9, .room, .sign, .animal, .spot .under, .fishb .fcard, .fblk .fc, .house .who, .lb-pic) > .pic { width: 100%; height: 100%; max-height: none; min-height: 0; aspect-ratio: auto; }
+:is(.walker, .good, .cloth, .tile9, .room, .sign, .animal, .spot .under, .fishb .fcard, .fblk .fc, .house .who, .lb-pic) > .ow { align-self: center; justify-self: center; }
+/* a peeked/found hiding place shrinks into the corner so the picture and its words show in full */
+.spot.peek .cover, .spot.found .cover { transform: translate(38%, -38%) scale(.24); background: transparent; }
+.spot .under { inset: 6% 6% 4%; }
+/* colour floor: dark pit under the tiles, tiles shake then fall, the miner hops */
+.stg-floor .floor { background: radial-gradient(#0E1020, #262A40); padding: 6px; box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 30px #000000; }
+.tile9.rise { animation: rise .45s steps(5) both; }
+@keyframes rise { from { transform: translateY(40%) scale(.5); opacity: 0; } to { transform: none; opacity: 1; } }
+.tile9.sink { animation: drop9 1s steps(10) forwards; pointer-events: none; }
+@keyframes drop9 { 0%, 30% { transform: none; } 8% { transform: translateX(-5px) rotate(-3deg); } 16% { transform: translateX(5px) rotate(3deg); } 24% { transform: translateX(-4px); }
+  100% { transform: translateY(30%) scale(.35) rotate(12deg); opacity: 0; filter: brightness(.4); } }
+.tile9.ok { box-shadow: inset 0 0 0 6px var(--ok), 0 0 0 4px #FFFFFF; z-index: 2; }
+.stg-floor .hopper { width: 11%; max-width: 70px; aspect-ratio: .75; transition: left .38s ease-out, top .38s ease-out; z-index: 5; }
+.stg-floor .hopper.still { transition: none; }
+.stg-floor .hopper .hb { display: block; width: 100%; height: 100%; }
+.stg-floor .hopper .hb svg, .stg-floor .hopper .hb .art { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 0 rgba(0,0,0,.35)); }
+.stg-floor .hopper .hb.hop { animation: hop9 .38s ease-out; }
+@keyframes hop9 { 50% { transform: translateY(-42px) scale(1.08); } }
+.stg-floor .hopper.fall .hb { animation: fall9 .8s ease-in forwards; }
+@keyframes fall9 { 30% { transform: translateY(-14px); } to { transform: translateY(40px) scale(.2); opacity: 0; } }
+.stg-floor .tbar i.low { background: var(--bad); }
+/* Unit 6 house */
+.house6 { position: relative; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: end; gap: 8px; padding: 10px; min-height: 260px; background: linear-gradient(#A9D9F3 0 62%, #7CC46A 62%); box-shadow: inset 0 0 0 3px var(--ink); }
+.h6house { position: relative; aspect-ratio: 446 / 480; opacity: .22; filter: grayscale(1); transition: opacity .6s, filter .6s; }
+.h6house.built { opacity: 1; filter: none; }
+.h6house.new { animation: arrive 1.2s steps(8); }
+.h6house > .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
+.h6dark { position: absolute; background: rgba(16, 20, 48, .62); transition: background .6s; }
+.h6dark.lit { background: rgba(255, 240, 180, .08); }
+.h6it { position: absolute; aspect-ratio: 1; display: grid; place-items: end center; filter: drop-shadow(0 2px 0 rgba(0,0,0,.3)); }
+.h6it .pic { width: 100%; height: 100%; object-fit: contain; }
+.h6it.new { animation: arrive 1.2s steps(8); }
+.h6yard { position: relative; height: 70%; min-height: 120px; }
+.h6tip { position: absolute; left: 10px; top: 10px; right: 10px; background: #FFFFFF; padding: 6px 10px; box-shadow: inset 0 0 0 3px var(--ink); font-size: 15px; }
+/* 穿搭比賽: calmer stage so the block kid stands out */
+.stg-dress .runway { isolation: isolate; }
+.stg-dress .runway::before { content: ""; position: absolute; inset: 0; background: inherit; filter: brightness(.5) saturate(.6) blur(2px); z-index: -2; }
+.stg-dress .runway::after { content: ""; position: absolute; left: 50%; bottom: -6%; width: 46%; height: 110%; transform: translateX(-50%); background: radial-gradient(ellipse at 50% 70%, rgba(255, 250, 225, .9), rgba(255, 240, 200, .35) 45%, transparent 70%); z-index: -1; }
+.stg-dress .dollbox svg { filter: drop-shadow(0 0 3px #FFFFFF) drop-shadow(0 6px 0 rgba(0,0,0,.25)); }
+/* 公園跑酷: floating blocks, drifting clouds, the park scrolls after each good jump */
+.stg-obby .parkbg { transition: background-position-x 1s ease-in-out; background-repeat: repeat-x; background-size: auto 100%; }
+.cloudp { position: absolute; top: 12%; width: 70px; height: 18px; background: #FFFFFF; box-shadow: 18px -10px 0 0 #FFFFFF, 36px 0 0 0 #FFFFFF; opacity: .9; z-index: 1; animation: drift 26s linear infinite; }
+.cloudp.c2 { top: 22%; animation-duration: 34s; animation-delay: -12s; transform: scale(.8); }
+.cloudp.c3 { top: 8%; animation-duration: 40s; animation-delay: -25s; }
+@keyframes drift { from { left: 105%; } to { left: -20%; } }
+@media (prefers-reduced-motion: no-preference) {
+  .fblk:not(.ok):not(.crumble) .fc, .fblk:not(.ok):not(.crumble) .gr { animation: floaty 1.8s ease-in-out infinite; animation-delay: var(--fd, 0s); }
+  .stg-obby .runner:not(.jump) > * { animation: runbob .5s steps(2) infinite; }
+}
+@keyframes floaty { 50% { transform: translateY(-8px); } }
+@keyframes runbob { 50% { transform: translateY(-4px); } }
+.fblk.enter { animation: enter .6s ease-out both; }
+@keyframes enter { from { transform: translateX(80%); opacity: 0; } to { transform: none; opacity: 1; } }
+.stg-obby.go .fblk:not(.ok) { transition: transform .8s ease-in, opacity .8s; transform: translateX(-140%); opacity: 0; }
+.stg-obby.go .fblk.ok { transition: transform .9s ease-in-out, opacity .9s; transform: translateX(-200%); opacity: 0; }
+.stg-obby .runner { transition: left .6s ease-in-out, top .55s ease-in-out; }
+/* Unit 10 shop: shelves full of things to sell */
+.store10 { position: relative; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 10px; align-items: end; padding: 12px; min-height: 280px; background: #F3D9B1 center / cover; box-shadow: inset 0 0 0 3px var(--ink); }
+.shelf10 { position: relative; aspect-ratio: 445 / 480; max-height: 330px; justify-self: center; width: 100%; background: #8F6440 center / 100% 100%; }
+.rows10 { position: absolute; left: 10%; right: 10%; top: 8%; bottom: 9%; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 4px 6px; align-items: end; }
+.store10 .sl { display: grid; place-items: end center; min-width: 0; min-height: 0; height: 100%; }
+.rows10 .sl:not(.on) { box-shadow: inset 0 -3px 0 rgba(255,255,255,.25); }
+.store10 .sl .pic { width: 100%; height: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 2px 0 rgba(0,0,0,.3)); }
+.store10 .sl.new { animation: arrive 1.2s steps(8); }
+.store10 .sl[data-w] { cursor: pointer; }
+.side10 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; align-content: end; height: 100%; }
+.side10 .sl { aspect-ratio: 1; height: auto; }
+.side10 .sl:not(.on) { display: none; }
 
 </style>
 
@@ -1125,11 +1201,11 @@ const THEME = {
   '3': { zh: '村莊', goal: '邀請大家住進村莊', slot: 'ground' },
   '4': { zh: '全家福牆', goal: '掛滿一面全家福牆', slot: 'frame' },
   '5': { zh: '方塊機器人', goal: '組一台方塊機器人', robot: true },
-  '6': { zh: '我的房子', goal: '蓋一間房子', slot: 'ground' },
+  '6': { zh: '我的房子', goal: '蓋一間房子', slot: 'ground', house: true },
   '7': { zh: '小鎮', goal: '蓋一座小鎮', slot: 'ground' },
   '8': { zh: '農場', goal: '經營一座農場', slot: 'ground' },
   '9': { zh: '穿搭秀', goal: '幫方塊小孩穿上衣服', doll: true },
-  '10': { zh: '餐廳', goal: '開一間餐廳', slot: 'shelf' },
+  '10': { zh: '餐廳', goal: '開一間餐廳', slot: 'shelf', store: true },
   '11': { zh: '海灘', goal: '布置一片海灘', slot: 'ground' },
   '12': { zh: '公園', goal: '蓋一座公園', slot: 'ground' },
 };
@@ -1405,7 +1481,41 @@ function homePos(u, items, w) {
   const cols = 7, r = Math.floor(k / cols), c = k % cols;
   return [36 + c * 54 + (r % 2) * 22, 172 + (r % 3) * 30 + ((k * 13) % 9)];
 }
+/* Unit 6: a real house. Building 'house' makes it appear, a room word lights that room, things go into their rooms */
+const ROOM6 = { bedroom: [8, 27, 41, 31], bathroom: [51, 27, 41, 31], living: [8, 59, 41, 30], kitchen: [51, 59, 41, 30] };
+const IN6 = { bedroom: ['bed', 'lamp', 'clock'], bathroom: ['shower', 'water'], living: ['aquarium', 'violin', 'cabinet', 'on', 'under'], kitchen: ['table', 'yogurt', 'box'] };
+function houseScene(u, opt = {}) {
+  const b = built(u.id), has = (k) => !!b[k];
+  const lit = { bedroom: has('bedroom'), bathroom: has('bathroom'), kitchen: has('kitchen'), living: has('house') };
+  const item = (id, x, y, w) => (has(id) && WORDS[id] ? `<span class="h6it${opt.fresh === id ? ' new' : ''}" style="left:${x}%;top:${y}%;width:${w}%" title="${esc(WORDS[id].w)}" data-w="${id}">${pic(WORDS[id].pic, { small: true })}</span>` : '');
+  let inside = '';
+  Object.entries(IN6).forEach(([room, ids]) => {
+    const [x, y, w, h] = ROOM6[room];
+    inside += `<span class="h6dark${lit[room] ? ' lit' : ''}" style="left:${x}%;top:${y}%;width:${w}%;height:${h}%"></span>`;
+    ids.forEach((id, k) => { inside += item(id, x + 2 + k * (w - 4) / Math.max(3, ids.length), y + h - 20, (w - 4) / Math.max(3, ids.length)); });
+  });
+  const out = ['yard', 'wall', 'zebra'].map((id, k) => item(id, 6 + k * 30, 58, 26)).join('');
+  return `<div class="house6" id="robox">
+    <div class="h6house${has('house') ? ' built' : ''}${opt.fresh === 'house' ? ' new' : ''}">${ART.house_cut ? artImg('house_cut') : ''}${inside}</div>
+    <div class="h6yard">${out}</div>
+    ${has('house') ? '' : '<span class="h6tip">先在工作台做出 <b class="en">house</b>，房子就會蓋起來！</span>'}
+  </div>`;
+}
+/* Unit 10: a little shop. Food goes onto the shelves to be sold; the other things stand around the shop */
+const FOOD10 = ['orange', 'banana', 'bread', 'candy', 'lemon', 'milk', 'potato', 'rice', 'tomato', 'water', 'slice', 'kiwis', 'carrot', 'yummy', 'tray'];
+function storeScene(u, opt = {}) {
+  const b = built(u.id), items = buildList(u);
+  const food = items.filter((w) => FOOD10.includes(w.id)), other = items.filter((w) => !FOOD10.includes(w.id));
+  const slot = (w) => `<span class="sl${b[w.id] ? ' on' : ''}${opt.fresh === w.id ? ' new' : ''}"${b[w.id] ? ` data-w="${w.id}"` : ''}>${b[w.id] ? pic(w.pic, { small: true }) : ''}</span>`;
+  const shelf = ART.shop_shelf || ART.toy_shelf;
+  return `<div class="store10" id="robox"${ART.shop_bg ? ` style="background-image:url('${ART.shop_bg}')"` : ''}>
+    <div class="shelf10"${shelf ? ` style="background-image:url('${shelf}')"` : ''}><div class="rows10">${food.map(slot).join('')}</div></div>
+    <div class="side10">${other.map(slot).join('')}</div>
+  </div>`;
+}
 function themeSVG(u, opt = {}) {
+  if (THEME[u.id].house) return houseScene(u, opt);
+  if (THEME[u.id].store) return storeScene(u, opt);
   const items = buildList(u); const b = built(u.id); const th = THEME[u.id];
   ST.pos = ST.pos || {}; const P = ST.pos[u.id] || {};
   let s = ART['bg_' + u.id] ? `<image href="${ART['bg_' + u.id]}" x="0" y="0" width="400" height="${SCN_H}" preserveAspectRatio="xMidYMin slice"/>` : '';
@@ -1677,7 +1787,7 @@ function unitHome() {
   </div>
   <div class="stack scenecol">
   ${th.robot ? camp5SVG() : th.doll ? `<div class="panel">${dollStage()}${wardrobeHTML()}</div>` : themeSVG(u)}
-  ${th.robot || th.doll ? '' : `<p class="small muted" style="margin:0">做好的東西會在這裡走來走去。點一下會說它的英文，按住可以拖到別的地方。${nBuilt(u) < buildList(u).length ? `還有 ${buildList(u).length - nBuilt(u)} 樣沒做。` : ''}</p>`}
+  ${th.robot || th.doll ? '' : th.store ? `<p class="small muted" style="margin:0">在工作台做好的食物會擺上貨架，準備賣給客人；其他做好的東西會放在店裡。點一下會說它的英文。</p>` : th.house ? `<p class="small muted" style="margin:0">在工作台做好的東西，會放進房子裡對應的房間；做出 bedroom、bathroom、kitchen，那個房間的燈就會亮起來。點一下東西會說它的英文。</p>` : `<p class="small muted" style="margin:0">做好的東西會在這裡走來走去。點一下會說它的英文，按住可以拖到別的地方。${nBuilt(u) < buildList(u).length ? `還有 ${buildList(u).length - nBuilt(u)} 樣沒做。` : ''}</p>`}
   </div>
   <div class="menu">
     <button class="mb main" data-go="u${u.id}-mine">${pickSVG()}<b>挖礦場</b><small>看圖聽音，敲出字母拼單字</small></button>
@@ -1697,6 +1807,7 @@ function unitHome() {
   wireScene(); if (th.doll) wireWardrobe();
 }
 function wireScene() {
+  qa('.h6it[data-w], .store10 .sl[data-w]').forEach((el) => el.onclick = () => { stopAll(); loadAudio(CU.id).then(() => sayWord(WORDS[el.dataset.w])); el.classList.remove('new'); void el.offsetWidth; el.classList.add('new'); });
   qa('.scene.live').forEach((svg) => {
     qa('.it[data-w]', svg).forEach((g) => {
       let st = null;
@@ -1837,7 +1948,7 @@ function bench() {
   const view = th.robot
     ? `<div class="robox" id="robox">${robotSVG(B, { act: BENCH.act, fresh: BENCH.fresh, colorful: BENCH.act === 'colorful', skeleton: BENCH.act === 'skeleton' })}</div>`
     : th.doll ? `<div>${dollStage({ fresh: BENCH.fresh })}</div>`
-    : `<div id="robox">${themeSVG(u, { fresh: BENCH.fresh })}</div>`;
+    : THEME[u.id].store ? storeScene(u, { fresh: BENCH.fresh }) : THEME[u.id].house ? houseScene(u, { fresh: BENCH.fresh }) : `<div id="robox">${themeSVG(u, { fresh: BENCH.fresh })}</div>`;
   const intro = `<p style="margin:0">點一個${th.robot ? '零件' : th.doll ? '衣服' : '東西'}來做。在挖礦場挖到的字才能做，拼對了${th.robot ? '零件就會裝到機器人身上' : th.doll ? '方塊小孩就會穿上它' : '它就會出現在' + esc(th.zh) + '裡'}。</p><p class="small muted" style="margin:0">${th.robot ? '機器人零件' : '做好的東西'} ${nBuilt(u)} / ${items.length}</p>`;
   render(`
   <div class="row">${back()}</div>
@@ -2032,7 +2143,7 @@ function fishRound() {
   <div class="row">${back()}<span class="sp"></span><span class="shields" id="bait" aria-label="魚餌">${[0, 1, 2].map((k) => baitSVG(k < F.bait)).join('')}</span></div>
   <div class="panel sea-panel">
     <div class="row"><h2>海灘釣魚</h2><span class="sp"></span><span class="pix">${F.i + 1} / ${F.ws.length}</span></div>
-    <div class="sea${ART.fish_bg ? ' art' : ''}" id="sea"${ART.fish_bg ? ` style="background-image:url('${ART.fish_bg}')"` : ''}>${ART.fish_bg ? '' : '<span class="dock"></span>'}<span class="fisher" id="mascot">${ART.miner_fish ? artImg('miner_fish') : mascot()}</span><svg class="line" id="line" aria-hidden="true"><line id="ln" x1="0" y1="0" x2="0" y2="0"/></svg>
+    <div class="sea${ART.fish_bg ? ' art' : ''}" id="sea"${ART.fish_bg ? ` style="background-image:url('${ART.fish_bg}')"` : ''}>${ART.fish_bg ? '' : '<span class="dock"></span>'}<span class="fisher" id="fisher">${ART.miner_fish ? artImg('miner_fish') : mascot()}</span><svg class="line" id="line" aria-hidden="true"><line id="ln" x1="0" y1="0" x2="0" y2="0"/></svg>
       ${F.fish.map((x, k) => `<button class="fishb" data-k="${k}" aria-label="魚 ${k + 1}"><span class="fcard">${ask === 'word' ? `<span class="ow en">${esc(x.o.w)}</span>` : cpic(x.o.pic, { small: true })}</span><span class="fbody">${fishSVG(x.f)}</span></button>`).join('')}
     </div>
     <div class="row"><button class="btn gold say" id="hear" aria-label="再聽一次">🔊</button><span>聽一聽，點帶著對的${ask === 'word' ? '英文字' : '圖'}的魚，把牠釣上來！</span></div>
@@ -2079,7 +2190,7 @@ async function fishPick(k) {
   if (x.o.id === w.id) {
     F.busy = true; x.hold = true; sfx.zap(); setMood('happy');
     const sea = document.getElementById('sea'), sr = sea.getBoundingClientRect(), br = b.getBoundingClientRect(), z = Z();
-    const ln = document.getElementById('ln'), fisher = document.getElementById('mascot').getBoundingClientRect();
+    const ln = document.getElementById('ln'), fisher = document.getElementById('fisher').getBoundingClientRect();
     const rx = (fisher.right - sr.left) / z, ry = (fisher.top - sr.top) / z + 6;
     ln.setAttribute('x1', rx); ln.setAttribute('y1', ry); ln.setAttribute('x2', (br.left + br.width / 2 - sr.left) / z); ln.setAttribute('y2', (br.top + 8 - sr.top) / z);
     await wait(350); if (F.stop) return;
@@ -2612,11 +2723,13 @@ function obbyRound() {
   const G = MG, w = G.ws[G.i], ask = mgAsk(G), opts = mgOpts(G, w, 3, ask); G.opts = opts;
   const ys = shuffle([18, 34, 50]);
   const last = G.i === G.ws.length - 1;
-  mgFrame(G, `<div class="parkbg"${ART.park_bg ? ` style="background-image:url('${ART.park_bg}')"` : ''}></div>
+  G.bgx = G.bgx || 0;
+  mgFrame(G, `<div class="parkbg" id="parkbg" style="${ART.park_bg ? `background-image:url('${ART.park_bg}');` : ''}background-position-x:${G.bgx}px"></div>
+    <span class="cloudp c1"></span><span class="cloudp c2"></span><span class="cloudp c3"></span>
     <div class="prog">${G.ws.map((_, k) => `<i class="${k < G.i ? 'done' : k === G.i ? 'now' : ''}"></i>`).join('')}<b>${GICON.obby()}</b></div>
     <div class="plat start"></div>
     <div class="runner" id="runner">${artOr('miner_run', mascot())}</div>
-    ${opts.map((o, k) => `<button class="fblk" data-k="${k}" style="left:${30 + k * 23}%;top:${ys[k]}%"><span class="fc">${face(o, ask)}</span><span class="gr"></span></button>`).join('')}
+    ${opts.map((o, k) => `<button class="fblk enter" data-k="${k}" style="left:${30 + k * 23}%;top:${ys[k]}%;--fd:${k * .45}s"><span class="fc">${face(o, ask)}</span><span class="gr"></span></button>`).join('')}
     ${last ? `<span class="goal">${GICON.obby()}</span>` : ''}`,
     `聽一聽，跳到${ask === 'word' ? '寫著對的英文字' : '有對的圖'}的方塊上！`);
   qa('.fblk').forEach((b) => b.onclick = () => obbyPick(+b.dataset.k, b));
@@ -2629,7 +2742,13 @@ async function obbyPick(k, b) {
   run.style.left = ((br.left - sr.left) / z + br.width / 2 - run.offsetWidth / 2) + 'px';
   run.style.top = ((br.top - sr.top) / z - run.offsetHeight + 6) + 'px'; run.classList.add('jump');
   await wait(520); if (G.stop) return;
-  if (G.opts[k].id === w.id) { b.classList.add('ok'); return mgGood(G, w, '跳上去了！'); }
+  if (G.opts[k].id === w.id) {
+    b.classList.add('ok');
+    // the park scrolls by: the other blocks fly off, the miner runs back to the start for the next jump
+    setTimeout(() => { if (G.stop) return; G.bgx -= 160; const bg = document.getElementById('parkbg'); if (bg) bg.style.backgroundPositionX = G.bgx + 'px';
+      stg.classList.add('go'); run.classList.remove('jump'); run.style.left = ''; run.style.top = ''; if (ART.miner_run) run.innerHTML = artImg('miner_run'); }, 650);
+    return mgGood(G, w, '跳上去了！');
+  }
   b.classList.add('crumble'); run.classList.add('fall'); sfx.no();
   await wait(700); if (G.stop) return;
   run.classList.remove('jump', 'fall'); run.style.left = ''; run.style.top = ''; if (ART.miner_run) run.innerHTML = artImg('miner_run');
@@ -2718,35 +2837,58 @@ async function dressPick(k, b) {
 }
 
 /* ---------- 顏色地板 (Look!): run to the colour or number you hear before the floor drops ---------- */
-function floorStart() { const G = mgNew('floor', floorStart, 10, { winText: '站到最後了！', loseText: '掉下去三次了，再挑戰一次！', pause: true }); G.round = floorRound; G.round(); }
+function floorStart() { const G = mgNew('floor', floorStart, 10, { winText: '站到最後了！', loseText: '掉下去三次了，再挑戰一次！', pause: true, hk: 4, goodWait: 1500 }); G.round = floorRound; G.round(); }
 function floorRound() {
   const G = MG, w = G.ws[G.i];
   const opts = mgOpts(G, w, 9, 'pic'); G.opts = opts;
-  G.time = 1; G.timeT = 9;
-  mgFrame(G, `<div class="tbar"><i id="tbar"></i></div><div class="floor">${opts.map((o, k) => `<button class="tile9" data-k="${k}">${cpic(o.pic, { small: true })}</button>`).join('')}</div>
-    <div class="hopper" id="hopper">${mascot()}</div>`,
+  G.time = 1; G.timeT = 8;
+  mgFrame(G, `<div class="tbar"><i id="tbar"></i></div><div class="floor" id="floor">${opts.map((o, k) => `<button class="tile9 rise" data-k="${k}" style="animation-delay:${k * 40}ms">${cpic(o.pic, { small: true })}</button>`).join('')}</div>
+    <div class="hopper" id="hopper"><span class="hb">${mascot()}</span></div>`,
     '聽到哪個顏色或數字，就趕快跑到那一格！時間到了，其他格子會掉下去。');
   qa('.tile9').forEach((b) => b.onclick = () => floorPick(+b.dataset.k, b));
+  G.fit = () => floorPlace(G.hk, false);
+  floorPlace(G.hk, false);
   G.last = performance.now(); G.raf = requestAnimationFrame(floorTick);
+}
+/* the miner stands on a tile; hop = jump there with an arc */
+function floorPlace(k, hop) {
+  const h = document.getElementById('hopper'), stg = document.getElementById('stg'), t = document.querySelector(`.tile9[data-k="${k}"]`);
+  if (!h || !stg || !t) return;
+  const sr = stg.getBoundingClientRect(), br = t.getBoundingClientRect(), z = Z();
+  h.classList.toggle('still', !hop);
+  h.style.left = ((br.left - sr.left) / z + br.width / 2 - h.offsetWidth / 2) + 'px';
+  h.style.top = ((br.top - sr.top) / z + br.height * .62 - h.offsetHeight) + 'px';
+  if (hop) { const hb = h.querySelector('.hb'); hb.classList.remove('hop'); void hb.offsetWidth; hb.classList.add('hop'); }
 }
 function floorTick(t) {
   const G = MG; if (!G || G.stop || G.kind !== 'floor') return;
   const dt = Math.min(.1, (t - G.last) / 1000); G.last = t;
   if (!G.busy && !G.paused && G.heard) G.time -= dt / G.timeT;
-  const b = document.getElementById('tbar'); if (b) b.style.width = Math.max(0, G.time * 100) + '%';
-  if (G.time <= 0 && !G.busy) { qa('.tile9').forEach((x) => x.classList.add('drop')); return mgTimeout(G, G.ws[G.i], '時間到，地板掉下去了！'); }
+  const b = document.getElementById('tbar'); if (b) { b.style.width = Math.max(0, G.time * 100) + '%'; b.classList.toggle('low', G.time < .3); }
+  if (G.time <= 0 && !G.busy) {
+    qa('.tile9').forEach((x) => x.classList.add('sink'));
+    const h = document.getElementById('hopper'); h && h.classList.add('fall');
+    G.hk = 4; return mgTimeout(G, G.ws[G.i], '時間到，地板全部掉下去了！');
+  }
   G.raf = requestAnimationFrame(floorTick);
 }
 async function floorPick(k, b) {
   const G = MG; if (G.busy) return; const w = G.ws[G.i];
-  const h = document.getElementById('hopper'), stg = document.getElementById('stg'), sr = stg.getBoundingClientRect(), br = b.getBoundingClientRect(), z = Z();
-  h.style.left = ((br.left - sr.left) / z + br.width / 2 - h.offsetWidth / 2) + 'px'; h.style.top = ((br.top - sr.top) / z + br.height / 2 - h.offsetHeight + 8) + 'px';
+  floorPlace(k, true);
   if (G.opts[k].id === w.id) {
-    b.classList.add('ok'); qa('.tile9').forEach((x) => { if (x !== b) x.classList.add('drop'); });
+    G.busy = true; G.hk = k; b.classList.add('ok');
+    await wait(380); if (G.stop) return;
+    qa('.tile9').forEach((x) => { if (x !== b) x.classList.add('sink'); });   // the others shake, then fall into the dark
     return mgGood(G, w, '站對了，其他格子都掉下去了！', G.miss ? 1 : G.time > .5 ? 3 : 2);
   }
-  b.classList.add('drop'); b.disabled = true; G.miss++; sfx.no(); setMood('oops');
-  mgFb('no', '這一格掉下去了！快換一格。'); await wait(400); if (!G.stop) sayWord(w);
+  G.busy = true; G.miss++; sfx.no(); setMood('oops');
+  await wait(380); if (G.stop) return;
+  b.classList.add('sink'); b.disabled = true;
+  const h = document.getElementById('hopper'); h.classList.add('fall');
+  mgFb('no', '踩錯了，這一格掉下去了！再聽一次。');
+  await wait(800); if (G.stop) return;
+  h.classList.remove('fall'); floorPlace(G.hk = qa('.tile9').findIndex((x) => !x.disabled), false);
+  G.busy = false; sayWord(w);
 }
 
 /* ---------- 教室尋寶 (Unit 1): things hide behind the desk, bag, box ...; remember where they are ---------- */
@@ -2848,7 +2990,7 @@ async function photoSnap() {
 function stormStart() { const G = mgNew('storm', stormStart, 8, { winText: '暴風雨過去了，大家都平安！', loseText: '淋成落湯雞了，再躲一次！', pause: true }); G.round = stormRound; G.round(); }
 function stormRound() {
   const G = MG, w = G.ws[G.i], ask = mgAsk(G), opts = mgOpts(G, w, 4, ask); G.opts = opts;
-  G.cx = 100; G.cT = 14 + (ask === 'word' ? 4 : 0);
+  G.cx = 88; G.cT = 8 + (ask === 'word' ? 2 : 0);
   mgFrame(G, `<div class="cloud" id="cloud">${artOr('storm', foeSVG('cloud'))}</div>
     <div class="housecut${ART.house_cut ? ' art' : ''}"${ART.house_cut ? ` style="background-image:url('${ART.house_cut}')"` : ''}><span class="roof"></span>${opts.map((o, k) => `<button class="room" data-k="${k}">${face(o, ask)}<span class="door"></span></button>`).join('')}</div>
     <div class="runner6" id="runner6">${mascot()}</div>`,
@@ -2859,9 +3001,9 @@ function stormRound() {
 function stormTick(t) {
   const G = MG; if (!G || G.stop || G.kind !== 'storm') return;
   const dt = Math.min(.1, (t - G.last) / 1000); G.last = t;
-  if (!G.busy && !G.paused && G.heard) G.cx -= dt * 62 / G.cT;
+  if (!G.busy && !G.paused && G.heard) G.cx -= dt * (88 - 60) / G.cT;
   const c = document.getElementById('cloud'); if (c) c.style.left = G.cx + '%';
-  if (G.cx <= 38 && !G.busy) { document.getElementById('stg').classList.add('raining'); return mgTimeout(G, G.ws[G.i], '暴風雨來了，淋濕了！'); }
+  if (G.cx <= 60 && !G.busy) { document.getElementById('stg').classList.add('raining'); return mgTimeout(G, G.ws[G.i], '暴風雨來了，淋濕了！'); }
   G.raf = requestAnimationFrame(stormTick);
 }
 async function stormPick(k, b) {
@@ -2870,7 +3012,7 @@ async function stormPick(k, b) {
   r.style.left = ((br.left - sr.left) / z + br.width / 2 - r.offsetWidth / 2) + 'px'; r.style.top = ((br.top - sr.top) / z + br.height - r.offsetHeight) + 'px';
   await wait(500); if (G.stop) return;
   if (G.opts[k].id === w.id) { b.classList.add('ok', 'shut'); r.classList.add('hide'); const c = document.getElementById('cloud'); c && c.classList.add('away'); return mgGood(G, w, '躲好了，暴風雨走了！'); }
-  b.classList.add('wrong'); b.disabled = true; G.cx = Math.max(40, G.cx - 12);
+  b.classList.add('wrong'); b.disabled = true; G.cx = Math.max(61, G.cx - 6);
   r.style.left = ''; r.style.top = ''; G.busy = false;
   return mgBad(G, w, '不是這間！暴風雨更近了，再聽一次。');
 }
